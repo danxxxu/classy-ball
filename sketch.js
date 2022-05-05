@@ -7,7 +7,7 @@ class Ball {
     this.speedY = 5;
     this.count = 0;
     this.color = (255, 255, 255);
-    this.maxCount = 4;
+    this.maxCount = 7;
   }
 
   display() {
@@ -37,20 +37,23 @@ class Ball {
 }
 
 let ball;
-let click;
+let firstClick, secondClick;
 let correctClicks;
 let wrongClick;
 let sliderSize, sliderSpeed, startButton;
 let defaultSize, defaultSpeed;
+let firstCount;
 
 function setup() {
   // createCanvas(400, 400);
   createCanvas(windowWidth, windowHeight);
 
   ball = new Ball();
-  click = false;
+  firstClick = false;
+  secondClick = false;
   correctClicks = 0;
   wrongClick = false;
+  firstCount = 4;
 
   textAlign(CENTER);
 
@@ -92,9 +95,10 @@ function start() {
   } else if (ball.y > height - ball.r) {
     ball.y = height - ball.r;
   }
-  
+
   ball.count = 0;
-  click = false;
+  firstClick = false;
+  secondClick = false;
   correctClicks = 0;
   wrongClick = false;
   loop();
@@ -113,46 +117,96 @@ function draw() {
 
   print(ball.count);
 
-  if (ball.count === ball.maxCount + 1) {
-    print(click);
-    if (click === false) {
-      fill(255);
-      textSize(32);
-      text("correct hits: " + correctClicks, width / 2, height / 2);
-      noLoop();
-      print(correctClicks);
-    } else {
-      click = false;
-      ball.count = 1;
-    }
-  } else if (ball.count < ball.maxCount) {
+  //   if (ball.count === ball.maxCount + 1) {
+  //     print(click);
+  //     if (click === false) {
+  //       fill(255);
+  //       textSize(32);
+  //       text("correct hits: " + correctClicks, width / 2, height / 2);
+  //       noLoop();
+  //       print(correctClicks);
+  //     } else {
+  //       click = false;
+  //       ball.count = 1;
+  //     }
+  //   } else if (ball.count < ball.maxCount) {
+  //     if (wrongClick === true) {
+  //       fill(255);
+  //       textSize(32);
+  //       text("correct hits: " + correctClicks, width / 2, height / 2);
+  //       noLoop();
+  //     }
+  //   }
+
+  if (ball.count < firstCount + 1) {
     if (wrongClick === true) {
       fill(255);
       textSize(32);
       text("correct hits: " + correctClicks, width / 2, height / 2);
       noLoop();
     }
+  } else if (ball.count === firstCount + 1) {
+    print(firstClick);
+    if (firstClick === false) {
+      fill(255);
+      textSize(32);
+      text("correct hits: " + correctClicks, width / 2, height / 2);
+      noLoop();
+      print(correctClicks);
+    }
+  } else if (ball.count > firstCount + 1 && ball.count < ball.maxCount + 1) {
+    if (wrongClick === true) {
+      fill(255);
+      textSize(32);
+      text("correct hits: " + correctClicks, width / 2, height / 2);
+      noLoop();
+    }
+  } else if (ball.count === ball.maxCount + 1) {
+    print(secondClick);
+    if (secondClick === false) {
+      fill(255);
+      textSize(32);
+      text("correct hits: " + correctClicks, width / 2, height / 2);
+      noLoop();
+      print(correctClicks);
+    } else {
+      firstClick = false;
+      secondClick = false;
+      ball.count = 1;
+    }
   }
 }
 
 function keyPressed() {
   if (keyCode === 32) {
+    // if (isLooping() === false) {
+    //   start();
+    // } else {
+    //   if (ball.count === ball.maxCount) {
+    //     click = true;
+    //     correctClicks++;
+    //     print(correctClicks);
+    //   } else if (ball.count < ball.maxCount) {
+    //     wrongClick = true;
+    //   }
+    // }
+
     if (isLooping() === false) {
-      // ball = new Ball();
-      // correctClicks = 0;
-      // wrongClick = false;
-      // sliderSize.value(defaultSize);
-      // sliderSpeed.value(defaultSpeed);
-      // loop();
-      
       start();
-      
     } else {
-      if (ball.count === ball.maxCount) {
-        click = true;
+      if (ball.count === firstCount) {
+        firstClick = true;
         correctClicks++;
-        print(correctClicks);
-      } else if (ball.count < ball.maxCount) {
+        // print(correctClicks);
+      } else if (ball.count < firstCount) {
+        wrongClick = true;
+      }
+
+      if (ball.count === ball.maxCount) {
+        secondClick = true;
+        correctClicks++;
+        // print(correctClicks);
+      } else if (ball.count > firstCount && ball.count < ball.maxCount) {
         wrongClick = true;
       }
     }
