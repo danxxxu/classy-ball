@@ -10,4 +10,4 @@ In this process, the 3 centers have to work together to achieve 1 activity - the
 
 Concept: Idan Altman 
 
-Play it at https://danxu0910.github.io/classy-ball/ 
+Play it at https://danxxxu.github.io/classy-ball/
